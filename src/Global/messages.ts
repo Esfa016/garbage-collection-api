@@ -10,6 +10,7 @@ export const ErrorMessages = {
   TokenExpired: 'Your session has expired. Please log in again to continue.',
   AccountDisabled:
     'Your account has been disabled. Please contact the administrator for assistance.',
+  ItemNotFound:"Item with this id is not found."
 };
 export const SuccessMessages = {
   SaveSuccessful: 'Your changes have been saved successfully.',
