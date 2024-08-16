@@ -6,6 +6,8 @@ import { Admin, AdminSchema } from './Model/authSchema';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { AdminAuthGuard } from './Guards/authGuards';
+import { OtpCodes, OtpCodeSchema } from './Model/otpSchema';
+import { EmailsModule } from 'src/emails/emails.module';
 
 @Global()
 @Module({
@@ -15,7 +17,10 @@ import { AdminAuthGuard } from './Guards/authGuards';
       global:true,
       secret: process.env.JWT_USER, signOptions: { expiresIn: '1d' }
     }),
-    MongooseModule.forFeature([{ name: Admin.name, schema: AdminSchema }]), JwtModule.register({ secret: process.env.JWT_USER, signOptions: { expiresIn: '1d' } })],
+    MongooseModule.forFeature([{ name: Admin.name, schema: AdminSchema }, { name: OtpCodes.name, schema: OtpCodeSchema }]), JwtModule.register({ secret: process.env.JWT_USER, signOptions: { expiresIn: '1d' } }),
+    EmailsModule
+  
+  ],
   
   controllers: [AuthController],
   providers: [AuthService],
