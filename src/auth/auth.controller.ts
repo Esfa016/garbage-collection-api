@@ -17,7 +17,8 @@ export class AuthController {
       .json({
         success: true,
         message: SuccessMessages.LoginSuccessful,
-        accessToken: result,
+        accessToken: result.accessToken,
+        email:result.email
       });
   }
   @UseGuards(AdminAuthGuard)

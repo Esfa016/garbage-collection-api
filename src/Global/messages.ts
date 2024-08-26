@@ -12,7 +12,8 @@ export const ErrorMessages = {
     'Your account has been disabled. Please contact the administrator for assistance.',
   ItemNotFound: "Item with this id is not found.",
   OtpNotFound: "Otp code is incorrect. Please try again.",
-  OtpExpired:"Otp code expired. Please request a new one."
+  OtpExpired: "Otp code expired. Please request a new one.",
+  BookingNotFound:"There is no booking saved with this id."
   
 };
 export const SuccessMessages = {

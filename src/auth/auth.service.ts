@@ -40,7 +40,7 @@ export class AuthService {
     if (!passMatch)
       throw new UnauthorizedException(ErrorMessages.IncorrectCredentials);
     const accessToken: string = this.jwtService.sign({ id: adminAccount._id });
-    return accessToken;
+    return { accessToken:accessToken,email:adminAccount.email };
   }
 
   async changePassword(passwordData: ChangePasswordDTO) {
