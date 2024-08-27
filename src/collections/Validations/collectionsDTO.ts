@@ -7,9 +7,11 @@ import {
   IsOptional,
   IsPostalCode,
   IsInt,
+  IsEnum,
 } from 'class-validator';
 import mongoose from 'mongoose';
 import { IsArrayOfObjectIds } from 'src/Global/Validations/pagination';
+import { PaymentType } from '../Models/collectionSchema';
 
 export class BookCollectionDTO {
   @Type(() => Date)
@@ -52,6 +54,7 @@ export class BookCollectionDTO {
   @IsInt()
   @IsNotEmpty()
   totalAmount: number;
+ 
   // @IsNotEmpty()
   // @IsArrayOfObjectIds()
   // items: mongoose.Schema.Types.ObjectId[];

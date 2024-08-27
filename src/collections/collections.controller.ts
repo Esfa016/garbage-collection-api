@@ -16,12 +16,13 @@ import { SuccessMessages } from 'src/Global/messages';
 import { AdminAuthGuard } from 'src/auth/Guards/authGuards';
 import { QueryParamsDTO } from 'src/Global/Validations/pagination';
 import { MongooseIdDTO } from 'src/Global/Validations/mongoose';
+import { PaymentType } from './Models/collectionSchema';
 
 @Controller({ path: 'collections' ,version:'1'})
 export class CollectionsController {
   constructor(private readonly collectionsService: CollectionsService) {}
 
-  @Post('request-booking')
+  @Post('request-booking-online')
   async createBooking(
     @Res() response: Response,
     @Body() body: BookCollectionDTO,
@@ -34,6 +35,12 @@ export class CollectionsController {
       checkoutLink:result.url,
     });
   }
+
+  @Post('request-booking-in-person')
+  async createBookingInPeron(@Res() response: Response, @Body() body: BookCollectionDTO) {
+    const result = await this.collectionsService.createBooking(body, PaymentType.ON_PERSON)
+    return response.status(HttpStatus.CREATED).json({success:true,message:SuccessMessages.SaveSuccessful,booking:result})
+    }
  @UseGuards(AdminAuthGuard)
   @Get()
  async getAllBookings(@Res() response: Response, @Query() query: QueryParamsDTO) {

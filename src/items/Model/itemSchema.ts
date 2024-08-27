@@ -14,7 +14,7 @@ export class Items {
     title: string
     @Prop({type:Number})
     price: number
-    @Prop({ enum: ItemLabel })
+    @Prop({ enum: ItemLabel, index:true })
     label: ItemLabel
     @Prop({ enum: ItemType, index:true })
     type: ItemType

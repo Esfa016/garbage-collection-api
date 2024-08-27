@@ -49,39 +49,61 @@ export class ItemsController {
     @Param() id: MongooseIdDTO,
   ) {
     const result = await this.itemsService.updateItem(body, id.id);
-    return response
-      .status(HttpStatus.OK)
-      .json({
-        success: true,
-        message: SuccessMessages.UpdateSuccessful,
-        item: result,
-      });
+    return response.status(HttpStatus.OK).json({
+      success: true,
+      message: SuccessMessages.UpdateSuccessful,
+      item: result,
+    });
   }
   @UseGuards(AdminAuthGuard)
   @Delete('/:id')
   async deleteItem(@Res() response: Response, @Param() id: MongooseIdDTO) {
     const result = await this.itemsService.deleteItem(id.id);
+    return response.status(HttpStatus.OK).json({
+      success: true,
+      message: SuccessMessages.DeleteSuccessful,
+      item: result,
+    });
+  }
+  @Get('volumes')
+  async getVolume(@Res() response: Response, @Query() query: QueryParamsDTO) {
+    const result = await this.itemsService.getVolume(query);
     return response
       .status(HttpStatus.OK)
       .json({
         success: true,
-        message: SuccessMessages.DeleteSuccessful,
-        item: result,
+        items: result.items,
+        totalData: result.totalData,
       });
   }
-  @Get('get-volumes')
-  async getVolume(@Res() response: Response, @Query() query: QueryParamsDTO) {
-    const result = await this.itemsService.getVolume(query)
-    return response.status(HttpStatus.OK).json({success:true,items:result.items,totalData:result.totalData})
-  }
-  @Get('get-singles')
+  @Get('singles')
   async getSingles(@Res() response: Response, @Query() query: QueryParamsDTO) {
-    const result = await this.itemsService.getSingles(query)
-    return response.status(HttpStatus.OK).json({success:true,items:result.items,totalData:result.totalData})
+    const result = await this.itemsService.getSingles(query);
+    return response
+      .status(HttpStatus.OK)
+      .json({
+        success: true,
+        items: result.items,
+        totalData: result.totalData,
+      });
+  }
+  @Get('/additionals')
+  async getAdditionals(
+    @Res() response: Response,
+    @Query() query: QueryParamsDTO,
+  ) {
+    const result = await this.itemsService.getAdditionalItems(query);
+    return response
+      .status(HttpStatus.OK)
+      .json({
+        success: true,
+        items: result.items,
+        totalData: result.totalData,
+      });
   }
   @Get('/:id')
   async getOne(@Res() response: Response, @Param() id: MongooseIdDTO) {
-    const result = await this.itemsService.findOne(id.id)
-    return response.status(HttpStatus.OK).json({success:true,item:result})
+    const result = await this.itemsService.findOne(id.id);
+    return response.status(HttpStatus.OK).json({ success: true, item: result });
   }
 }

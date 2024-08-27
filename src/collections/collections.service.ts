@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Collections } from './Models/collectionSchema';
+import { Collections, PaymentType } from './Models/collectionSchema';
 import mongoose, { Model } from 'mongoose';
 import { BookCollectionDTO } from './Validations/collectionsDTO';
 import { QueryParamsDTO } from 'src/Global/Validations/pagination';
@@ -48,8 +48,10 @@ export class CollectionsService {
       },
     });
     return paymentData
-    // const booking: Collections = await this.repository.create(body);
-   // return booking;
+   
+  }
+  createBooking(body: BookCollectionDTO, paymentType:PaymentType) {
+    return this.repository.create({...body,paymentType:paymentType})
   }
 
   async getBookings(pagination: QueryParamsDTO) {

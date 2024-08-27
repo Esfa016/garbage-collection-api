@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Items, ItemType } from './Model/itemSchema';
+import { ItemLabel, Items, ItemType } from './Model/itemSchema';
 import mongoose, { Model } from 'mongoose';
 import { CreateItemDTO, UpdateItemDTO } from './Validations/itemsDTO';
 import { QueryParamsDTO } from 'src/Global/Validations/pagination';
@@ -17,9 +17,9 @@ export class ItemsService {
     return item;
   }
   async getAllItems(pagiante: QueryParamsDTO) {
-    const totalData: number = await this.repository.countDocuments();
+    const totalData: number = await this.repository.countDocuments({label:ItemLabel.STANDARD});
     const items: Items[] = await this.repository
-      .find()
+      .find({ label: ItemLabel.STANDARD })
       .skip(PaginationHelper.paginateQuery(pagiante))
       .limit(pagiante.limit)
       .sort({ createdAt: -1 });
@@ -70,5 +70,14 @@ export class ItemsService {
       totalData: countDocuments,
       items: items,
     };
+  }
+
+  async getAdditionalItems(pagination: QueryParamsDTO) {
+    const countDocuments: number = await this.repository.countDocuments({ label: ItemLabel.ADDITIONAL })
+    const items: Items[] = await this.repository.find({ label: ItemLabel.ADDITIONAL }).skip(PaginationHelper.paginateQuery(pagination)).limit(pagination.limit)
+    return {
+      totalData: countDocuments,
+      items:items
+    }
   }
 }
