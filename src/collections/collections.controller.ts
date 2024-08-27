@@ -8,11 +8,12 @@ import {
   Body,
   HttpStatus,
   Headers,
+  Req,
   Param,
   UnauthorizedException,
 } from '@nestjs/common';
 import { CollectionsService } from './collections.service';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import { BookCollectionDTO } from './Validations/collectionsDTO';
 import { SuccessMessages } from 'src/Global/messages';
 import { AdminAuthGuard } from 'src/auth/Guards/authGuards';
@@ -77,12 +78,13 @@ export class CollectionsController {
   @Post('/webhook')
   async webhook(
     @Res() response: Response,
+    @Req()request,
     @Body() body,
     @Headers('stripe-signature') sig: string,
   ) {
      if (!sig) throw new UnauthorizedException('Access denied');
     const result = await this.collectionsService.webhook(
-      body,
+      request.rawBody,
       sig,
     );
     return response
