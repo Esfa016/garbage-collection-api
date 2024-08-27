@@ -66,7 +66,7 @@ export class CollectionsService {
   async getBookings(pagination: QueryParamsDTO) {
     const totalData: number = await this.repository.countDocuments();
     const bookings: Collections[] = await this.repository
-      .find()
+      .find().sort({createdAt:-1})
       .skip(PaginationHelper.paginateQuery(pagination))
       .limit(pagination.limit);
     return {

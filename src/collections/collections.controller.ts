@@ -63,7 +63,7 @@ export class CollectionsController {
     @Query() query: QueryParamsDTO,
   ) {
     const result = await this.collectionsService.getBookings(query);
-    return response.status(HttpStatus.OK).json({ success: true, ...result });
+    return response.status(HttpStatus.OK).json({ success: true, bookings:result.bookings,totalData:result.totalData });
   }
   @Get('/:id')
   async getSingleBooking(
@@ -82,7 +82,6 @@ export class CollectionsController {
     @Body() body,
     @Headers('stripe-signature') sig: string,
   ) {
-    console.log(request)
      if (!sig) throw new UnauthorizedException('Access denied');
     const result = await this.collectionsService.webhook(
       request.rawBody,

@@ -51,6 +51,7 @@ export class ItemsService {
     });
     const items: Items[] = await this.repository
       .find({ type: ItemType.SINGLE })
+      .sort({ createdAt: -1 })
       .skip(PaginationHelper.paginateQuery(pagination))
       .limit(pagination.limit);
     return {
@@ -64,6 +65,7 @@ export class ItemsService {
     });
     const items: Items[] = await this.repository
       .find({ type: ItemType.VOLUME })
+      .sort({ createdAt: -1 })
       .skip(PaginationHelper.paginateQuery(pagination))
       .limit(pagination.limit);
     return {
@@ -74,7 +76,10 @@ export class ItemsService {
 
   async getAdditionalItems(pagination: QueryParamsDTO) {
     const countDocuments: number = await this.repository.countDocuments({ label: ItemLabel.ADDITIONAL })
-    const items: Items[] = await this.repository.find({ label: ItemLabel.ADDITIONAL }).skip(PaginationHelper.paginateQuery(pagination)).limit(pagination.limit)
+    const items: Items[] = await this.repository.find({ label: ItemLabel.ADDITIONAL }).
+      sort({ createdAt: -1 })
+        .skip(PaginationHelper.paginateQuery(pagination))
+        .limit(pagination.limit);
     return {
       totalData: countDocuments,
       items:items
