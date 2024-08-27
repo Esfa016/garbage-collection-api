@@ -54,6 +54,14 @@ export class CollectionsService {
     return this.repository.create({...body,paymentType:paymentType})
   }
 
+  async webhook(body: any, signature: any) {
+    const event = this.stripe.webhooks.constructEvent(body, signature, process.env.STRIPE_WEBHOOK_KEY)
+    const metadata = event.data.object.metadata
+    if (event.type === 'checkout.session.completed') {
+      await this.createBooking(body,PaymentType.ONLINE)
+    }
+  }
+
   async getBookings(pagination: QueryParamsDTO) {
     const totalData: number = await this.repository.countDocuments();
     const bookings: Collections[] = await this.repository
