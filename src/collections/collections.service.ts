@@ -58,7 +58,7 @@ export class CollectionsService {
     const event = this.stripe.webhooks.constructEvent(body, signature, process.env.STRIPE_WEBHOOK_KEY)
     const metadata = event.data.object.metadata
     if (event.type === 'checkout.session.completed') {
-      await this.createBooking(body,PaymentType.ONLINE)
+      await this.createBooking(metadata,PaymentType.ONLINE)
     }
   }
 
