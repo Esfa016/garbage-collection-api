@@ -53,4 +53,9 @@ export class CollectionsController {
     return response.status(HttpStatus.OK).json({success:true,booking:result})
     
   }
+  @Post('/webhook')
+  async webhook(@Res() response: Response, @Body() body: BookCollectionDTO) {
+    const result = await this.collectionsService.createBooking(body, PaymentType.ONLINE)
+    return response.status(HttpStatus.CREATED).json({success:true,message:SuccessMessages.SaveSuccessful,booking:result})
+  }
 }
