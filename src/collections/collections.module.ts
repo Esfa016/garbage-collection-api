@@ -13,7 +13,7 @@ export class CollectionsModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     applyRawBodyOnlyTo(consumer, {
       method: RequestMethod.POST,
-      path:'/v1/collections/webhook'
+      path:'api/v1/collections/webhook'
         
       })
   }
