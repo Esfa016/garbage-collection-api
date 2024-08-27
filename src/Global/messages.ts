@@ -13,7 +13,8 @@ export const ErrorMessages = {
   ItemNotFound: "Item with this id is not found.",
   OtpNotFound: "Otp code is incorrect. Please try again.",
   OtpExpired: "Otp code expired. Please request a new one.",
-  BookingNotFound:"There is no booking saved with this id."
+  BookingNotFound: "There is no booking saved with this id.",
+
   
 };
 export const SuccessMessages = {
@@ -21,7 +22,7 @@ export const SuccessMessages = {
   LoginSuccessful: 'You have logged in successfully.',
   UpdateSuccessful: 'Your update was successful.',
   DeleteSuccessful: 'The item has been deleted successfully.',
-
+    RedirectionSuccessful:"Payment redirection successful.",
   ResetPasswordSent:
     'We have sent an OTP to your account. Please check your email.',
 };

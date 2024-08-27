@@ -1,7 +1,11 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 import { Items } from 'src/items/Model/itemSchema';
-
+export enum PaymentStatus {
+  PENDING = 'PENEDING',
+  PAID = 'PAID'
+  
+}
 @Schema({ timestamps: true })
 export class Collections extends Document {
   @Prop({ type: Date })
@@ -32,7 +36,9 @@ export class Collections extends Document {
   accessInformation: string;
   @Prop({ type: Number })
   totalAmount: number;
-  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: Items.name }])
-  items: mongoose.Schema.Types.ObjectId[];
+  // @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: Items.name }])
+  // items: mongoose.Schema.Types.ObjectId[];
+  @Prop({ enum: PaymentStatus , default:PaymentStatus.PAID})
+  paymentStatus:PaymentStatus
 }
 export const CollectionSchema = SchemaFactory.createForClass(Collections);

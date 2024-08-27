@@ -21,17 +21,17 @@ import { MongooseIdDTO } from 'src/Global/Validations/mongoose';
 export class CollectionsController {
   constructor(private readonly collectionsService: CollectionsService) {}
 
-  @Post()
+  @Post('request-booking')
   async createBooking(
     @Res() response: Response,
     @Body() body: BookCollectionDTO,
   ) {
     const result = await this.collectionsService.bookCollection(body);
 
-    return response.status(HttpStatus.CREATED).json({
+    return response.status(HttpStatus.PERMANENT_REDIRECT).json({
       success: true,
-      message: SuccessMessages.SaveSuccessful,
-      booking: result,
+      message: SuccessMessages.RedirectionSuccessful,
+      checkoutLink:result.url,
     });
   }
  @UseGuards(AdminAuthGuard)

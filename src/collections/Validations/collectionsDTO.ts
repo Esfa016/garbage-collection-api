@@ -37,7 +37,7 @@ export class BookCollectionDTO {
   @IsString()
   @IsNotEmpty()
   country: string;
-  @IsPostalCode()
+  @IsString()
   @IsNotEmpty()
   postalCode: string;
   @IsString()
@@ -52,7 +52,7 @@ export class BookCollectionDTO {
   @IsInt()
   @IsNotEmpty()
   totalAmount: number;
-  @IsNotEmpty()
-  @IsArrayOfObjectIds()
-  items: mongoose.Schema.Types.ObjectId[];
+  // @IsNotEmpty()
+  // @IsArrayOfObjectIds()
+  // items: mongoose.Schema.Types.ObjectId[];
 }

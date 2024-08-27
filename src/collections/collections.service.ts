@@ -6,21 +6,50 @@ import { BookCollectionDTO } from './Validations/collectionsDTO';
 import { QueryParamsDTO } from 'src/Global/Validations/pagination';
 import { PaginationHelper } from 'src/Global/helpers';
 import { ErrorMessages } from 'src/Global/messages';
+import Stripe from 'stripe';
 
 @Injectable()
 export class CollectionsService {
+  private stripe
   constructor(
     @InjectModel(Collections.name)
     private readonly repository: Model<Collections>,
-  ) {}
+  ) {
+    this.stripe = new Stripe(process.env.STRIPE_SECRET, {
+      apiVersion:'2024-06-20'
+    });
+  }
 
   findById(id: mongoose.Schema.Types.ObjectId) {
     return this.repository.findById(id)
   }
 
-  async bookCollection(body: BookCollectionDTO) {
-    const booking: Collections = await this.repository.create(body);
-    return booking;
+  async bookCollection(body: BookCollectionDTO)
+  {
+    const paymentData = await this.stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price_data: {
+            currency: 'gbp',
+            product_data: {
+              name: body.firstName,
+            },
+            unit_amount: body.totalAmount * 100,
+          },
+          quantity: 1,
+        },
+      ],
+      mode: 'payment',
+      success_url: `https://google.com`,
+      cancel_url: 'https://google.com',
+      metadata: {
+        ...body,
+      },
+    });
+    return paymentData
+    // const booking: Collections = await this.repository.create(body);
+   // return booking;
   }
 
   async getBookings(pagination: QueryParamsDTO) {
