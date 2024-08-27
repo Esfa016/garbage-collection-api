@@ -60,6 +60,7 @@ export class CollectionsService {
     if (event.type === 'checkout.session.completed') {
       await this.createBooking(metadata,PaymentType.ONLINE)
     }
+    return metadata;
   }
 
   async getBookings(pagination: QueryParamsDTO) {
