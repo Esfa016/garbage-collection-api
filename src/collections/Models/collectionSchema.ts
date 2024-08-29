@@ -1,5 +1,5 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { Document } from 'mongoose';
+import mongoose, { Document, Mongoose } from 'mongoose';
 import { Items } from 'src/items/Model/itemSchema';
 export enum PaymentType {
   ON_PERSON = 'ON_PERSON',
@@ -37,6 +37,8 @@ export class Collections extends Document {
   @Prop({ type: Number })
   totalAmount: number;
   @Prop({ enum: PaymentType })
-  paymentType:PaymentType
+  paymentType: PaymentType
+  @Prop({ type:mongoose.Schema.Types.ObjectId, ref: Items.name })
+  items:mongoose.Schema.Types.ObjectId[]
 }
 export const CollectionSchema = SchemaFactory.createForClass(Collections);

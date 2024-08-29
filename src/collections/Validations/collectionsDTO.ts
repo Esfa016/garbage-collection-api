@@ -8,6 +8,8 @@ import {
   IsPostalCode,
   IsInt,
   IsEnum,
+  IsPhoneNumber,
+  IsArray,
 } from 'class-validator';
 import mongoose from 'mongoose';
 import { IsArrayOfObjectIds } from 'src/Global/Validations/pagination';
@@ -33,6 +35,9 @@ export class BookCollectionDTO {
   @IsString()
   @IsNotEmpty()
   addressLine1: string;
+  @IsNotEmpty()
+  @IsPhoneNumber()
+  phone: string;
   @IsString()
   @IsOptional()
   addressLine2: string;
@@ -54,7 +59,10 @@ export class BookCollectionDTO {
   @IsInt()
   @IsNotEmpty()
   totalAmount: number;
- 
+  @IsNotEmpty()
+  @IsArrayOfObjectIds()
+  items:mongoose.Schema.Types.ObjectId[]
+
   // @IsNotEmpty()
   // @IsArrayOfObjectIds()
   // items: mongoose.Schema.Types.ObjectId[];

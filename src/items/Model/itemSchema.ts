@@ -19,8 +19,8 @@ export class Items {
     @Prop({ enum: ItemType, index:true })
     type: ItemType
     @Prop()
-    description:string
-
+    description: string
+  
 }
 
 export const ItemsSchema = SchemaFactory.createForClass(Items)

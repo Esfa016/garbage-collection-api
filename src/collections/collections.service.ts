@@ -26,6 +26,9 @@ export class CollectionsService {
 
   async bookCollection(body: BookCollectionDTO)
   {
+    let items: mongoose.Schema.Types.ObjectId[] = []
+    body.items.forEach((el) => { items.push(el) })
+    delete (body.items)
     const paymentData = await this.stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
@@ -44,9 +47,11 @@ export class CollectionsService {
       success_url: `https://google.com`,
       cancel_url: 'https://google.com',
       metadata: {
-        ...body,
+        items:items.join(','),
+       ...body
       },
     });
+   
     return paymentData
    
   }
@@ -58,6 +63,7 @@ export class CollectionsService {
     const event = this.stripe.webhooks.constructEvent(body, signature, process.env.STRIPE_WEBHOOK_KEY)
     const metadata = event.data.object.metadata
     if (event.type === 'checkout.session.completed') {
+        metadata.items = metadata.items.split(',')
       await this.createBooking(metadata,PaymentType.ONLINE)
     }
     return metadata;

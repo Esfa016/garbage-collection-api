@@ -10,14 +10,19 @@ import { ErrorMessages } from 'src/Global/messages';
 export class ItemsService {
   constructor(
     @InjectModel(Items.name) private readonly repository: Model<Items>,
+ 
   ) {}
 
   async createItem(body: CreateItemDTO) {
-    const item: Items = await this.repository.create(body);
+    const item: Items = await this.repository.create({
+      ...body
+    });
     return item;
   }
   async getAllItems(pagiante: QueryParamsDTO) {
-    const totalData: number = await this.repository.countDocuments({label:ItemLabel.STANDARD});
+    const totalData: number = await this.repository.countDocuments({
+      label: ItemLabel.STANDARD,
+    });
     const items: Items[] = await this.repository
       .find({ label: ItemLabel.STANDARD })
       .skip(PaginationHelper.paginateQuery(pagiante))
@@ -75,14 +80,17 @@ export class ItemsService {
   }
 
   async getAdditionalItems(pagination: QueryParamsDTO) {
-    const countDocuments: number = await this.repository.countDocuments({ label: ItemLabel.ADDITIONAL })
-    const items: Items[] = await this.repository.find({ label: ItemLabel.ADDITIONAL }).
-      sort({ createdAt: -1 })
-        .skip(PaginationHelper.paginateQuery(pagination))
-        .limit(pagination.limit);
+    const countDocuments: number = await this.repository.countDocuments({
+      label: ItemLabel.ADDITIONAL,
+    });
+    const items: Items[] = await this.repository
+      .find({ label: ItemLabel.ADDITIONAL })
+      .sort({ createdAt: -1 })
+      .skip(PaginationHelper.paginateQuery(pagination))
+      .limit(pagination.limit);
     return {
       totalData: countDocuments,
-      items:items
-    }
+      items: items,
+    };
   }
 }
