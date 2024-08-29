@@ -32,7 +32,7 @@ export class CollectionsController {
   ) {
     const result = await this.collectionsService.bookCollection(body);
 
-    return response.status(HttpStatus.PERMANENT_REDIRECT).json({
+    return response.status(HttpStatus.OK).json({
       success: true,
       message: SuccessMessages.RedirectionSuccessful,
       checkoutLink: result.url,
