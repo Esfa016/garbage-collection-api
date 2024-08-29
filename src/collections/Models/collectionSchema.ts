@@ -38,7 +38,7 @@ export class Collections extends Document {
   totalAmount: number;
   @Prop({ enum: PaymentType })
   paymentType: PaymentType
-  @Prop({ type:mongoose.Schema.Types.ObjectId, ref: Items.name })
+  @Prop([{ type:mongoose.Schema.Types.ObjectId, ref: Items.name }])
   items:mongoose.Schema.Types.ObjectId[]
 }
 export const CollectionSchema = SchemaFactory.createForClass(Collections);

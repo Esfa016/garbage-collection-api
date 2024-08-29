@@ -21,7 +21,7 @@ export class CollectionsService {
   }
 
   findById(id: mongoose.Schema.Types.ObjectId) {
-    return this.repository.findById(id)
+    return this.repository.findById(id).populate('items');
   }
 
   async bookCollection(body: BookCollectionDTO)
@@ -74,7 +74,9 @@ export class CollectionsService {
     const bookings: Collections[] = await this.repository
       .find().sort({createdAt:-1})
       .skip(PaginationHelper.paginateQuery(pagination))
-      .limit(pagination.limit);
+      .limit(pagination.limit)
+      .populate('items')
+      ;
     return {
       totalData: totalData,
       bookings: bookings,
