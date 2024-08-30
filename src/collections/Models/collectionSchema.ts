@@ -2,7 +2,7 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document, Mongoose } from 'mongoose';
 import { Items } from 'src/items/Model/itemSchema';
 export enum PaymentType {
-  ON_PERSON = 'ON_PERSON',
+  ON_PERSON = 'IN_PERSON',
   ONLINE = 'ONLINE'
   
 }
