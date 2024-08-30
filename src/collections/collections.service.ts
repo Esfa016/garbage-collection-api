@@ -7,6 +7,7 @@ import { QueryParamsDTO } from 'src/Global/Validations/pagination';
 import { PaginationHelper } from 'src/Global/helpers';
 import { ErrorMessages } from 'src/Global/messages';
 import Stripe from 'stripe';
+import { EmailsService } from 'src/emails/emails.service';
 
 @Injectable()
 export class CollectionsService {
@@ -14,6 +15,7 @@ export class CollectionsService {
   constructor(
     @InjectModel(Collections.name)
     private readonly repository: Model<Collections>,
+    private readonly emailService:EmailsService
   ) {
     this.stripe = new Stripe(process.env.STRIPE_SECRET, {
       apiVersion:'2024-06-20'
@@ -55,8 +57,11 @@ export class CollectionsService {
     return paymentData
    
   }
-  createBooking(body: BookCollectionDTO, paymentType:PaymentType) {
-    return this.repository.create({...body,paymentType:paymentType})
+  async createBooking(body: BookCollectionDTO, paymentType: PaymentType) {
+ 
+    const collection: Collections = await this.repository.create({ ...body, paymentType: paymentType })
+    await this.emailService.sendOrderConfirmationMessage(collection.firstName, collection.email)
+    return collection
   }
 
   async webhook(body: any, signature: any) {

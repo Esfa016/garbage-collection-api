@@ -4,8 +4,11 @@ import { CollectionsController } from './collections.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Collections, CollectionSchema } from './Models/collectionSchema';
 import { applyRawBodyOnlyTo } from '@golevelup/nestjs-webhooks/lib/webhooks.utilities';
+import { EmailsModule } from 'src/emails/emails.module';
 @Module({
-  imports:[MongooseModule.forFeature([{name:Collections.name,schema:CollectionSchema}])],
+  imports: [
+    EmailsModule,
+    MongooseModule.forFeature([{ name: Collections.name, schema: CollectionSchema }])],
   controllers: [CollectionsController],
   providers: [CollectionsService],
 })

@@ -20,4 +20,19 @@ export class EmailsService {
     };
     return this.mailer.send(messageData);
   }
+
+  sendOrderConfirmationMessage(firstName: string, email: string) {
+    const messageData: Object = {
+      to: email,
+      from: {
+        name: 'Hillsteh',
+        email: 'contact@hillstech.de',
+      },
+      templateId: TemplateIds.OrderConfirmed,
+      dynamic_template_data: {
+        firstName: firstName,
+      },
+    };
+    return this.mailer.send(messageData);
+  }
 }
