@@ -21,10 +21,10 @@ export class ItemsService {
   }
   async getAllItems(pagiante: QueryParamsDTO) {
     const totalData: number = await this.repository.countDocuments({
-      label: ItemLabel.STANDARD,
+    
     });
     const items: Items[] = await this.repository
-      .find({ label: ItemLabel.STANDARD })
+      .find()
       .skip(PaginationHelper.paginateQuery(pagiante))
       .limit(pagiante.limit)
       .sort({ createdAt: -1 });
