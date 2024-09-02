@@ -51,11 +51,11 @@ export class ItemsService {
     return itemFound;
   }
   async getSingles(pagination: QueryParamsDTO) {
-    const countDocuments: number = await this.repository.countDocuments({
-      type: ItemType.SINGLE,
-    });
+    const countDocuments: number = await this.repository.countDocuments({$and:[{type:ItemType.SINGLE},{label:ItemLabel.STANDARD}]});
     const items: Items[] = await this.repository
-      .find({ type: ItemType.SINGLE })
+      .find({
+        $and: [{ type: ItemType.SINGLE }, { label: ItemLabel.STANDARD }],
+      })
       .sort({ createdAt: -1 })
       .skip(PaginationHelper.paginateQuery(pagination))
       .limit(pagination.limit);
@@ -66,10 +66,10 @@ export class ItemsService {
   }
   async getVolume(pagination: QueryParamsDTO) {
     const countDocuments: number = await this.repository.countDocuments({
-      type: ItemType.VOLUME,
+      $and: [{ type: ItemType.VOLUME }, { label: ItemLabel.STANDARD }],
     });
     const items: Items[] = await this.repository
-      .find({ type: ItemType.VOLUME })
+      .find({ $and: [{ type: ItemType.VOLUME },{label:ItemLabel.STANDARD}] })
       .sort({ createdAt: -1 })
       .skip(PaginationHelper.paginateQuery(pagination))
       .limit(pagination.limit);
