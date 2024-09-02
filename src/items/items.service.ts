@@ -81,10 +81,12 @@ export class ItemsService {
 
   async getAdditionalItems(pagination: QueryParamsDTO) {
     const countDocuments: number = await this.repository.countDocuments({
-      label: ItemLabel.ADDITIONAL,
+      $and: [{ label: ItemLabel.ADDITIONAL },{type:ItemType.VOLUME}],
     });
     const items: Items[] = await this.repository
-      .find({ label: ItemLabel.ADDITIONAL })
+      .find({
+        $and: [{ label: ItemLabel.ADDITIONAL }, { type: ItemType.VOLUME }],
+      })
       .sort({ createdAt: -1 })
       .skip(PaginationHelper.paginateQuery(pagination))
       .limit(pagination.limit);
